@@ -1,45 +1,52 @@
-const form = document.getElementById('sizeForm');
-form.addEventListener('submit', e => {
-  e.preventDefault();
+const calcBtn = document.getElementById('calc');
+const resDiv = document.getElementById('result');
+const pdfBtn = document.getElementById('downloadPDF');
 
+calcBtn.addEventListener('click', () => {
   const gender = document.getElementById('gender').value;
-  const h = +document.getElementById('height').value;
-  const s = +document.getElementById('shoulder').value;
-  const w = +document.getElementById('waist').value;
+  const fmt = document.getElementById('format').value;
+  const chest = +document.getElementById('chest').value;
+  const waist = +document.getElementById('waist').value;
   const hip = +document.getElementById('hip').value;
 
-  if (!h || !s || !w || !hip) {
-    return showResult("Iltimos, barcha maydonlarni to‘ldiring.");
+  if (!chest || !waist || !hip) {
+    resDiv.innerText = "Iltimos, barcha maydonlarni to‘ldiring.";
+    return;
   }
 
-  const size = (gender === 'men')
-    ? calcMen(h, s, w, hip)
-    : calcWomen(h, s, w, hip);
+  let size = gender === 'men'
+    ? calcMen(chest)
+    : calcWomen(chest);
 
-  showResult(`Sizga mos kiyim o‘lchamingiz: ${size}`);
-  document.getElementById('downloadPDF').style.display = 'block';
+  let out = fmt === 'letter'
+    ? size
+    : mapToNumber(size);
+
+  resDiv.innerText = `Sizga mos o‘lcham: ${out}`;
+  pdfBtn.style.display = 'block';
 });
 
-document.getElementById('downloadPDF').addEventListener('click', () => {
+pdfBtn.addEventListener('click', () => {
   html2pdf().from(document.getElementById('pdfArea')).save('kiyim-olchami.pdf');
 });
 
-function showResult(text) {
-  document.getElementById('result').innerText = text;
+function calcMen(ch) {
+  if (ch >= 147) return '4XL';
+  if (ch >= 137) return '3XL';
+  if (ch >= 127) return '2XL';
+  if (ch >= 117) return 'XL';
+  return 'L';
 }
 
-// Erkaklar uchun
-function calcMen(h, s, w, hip) {
-  if (h >=185 || s>=106 || w>=91) return 'XL';
-  if (h>=180 || s>=101 || w>=86) return 'L';
-  if (h>=175 || s>=96  || w>=81) return 'M';
-  return 'S';
+function calcWomen(bust) {
+  if (bust >= 143) return '4XL';
+  if (bust >= 131) return '3XL';
+  if (bust >= 119) return 'XXL';
+  if (bust >= 107) return 'XL';
+  return 'L';
 }
 
-// Ayollar uchun (EU chart) :contentReference[oaicite:1]{index=1}
-function calcWomen(h, s, w, hip) {
-  if (h>=175 || hip>=114 || w>=86) return 'XL';
-  if (h>=174 || hip>=108 || w>=80) return 'L';
-  if (h>=172 || hip>=104 || w>=76) return 'M';
-  return 'S';
+function mapToNumber(size) {
+  const map = { L: 1, XL:2, XXL:3, '3XL':4, '4XL':5 };
+  return map[size] || size;
 }
