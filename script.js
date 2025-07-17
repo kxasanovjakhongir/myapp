@@ -1,37 +1,45 @@
-document.getElementById('sizeForm').addEventListener('submit', function (e) {
+const form = document.getElementById('sizeForm');
+form.addEventListener('submit', e => {
   e.preventDefault();
 
-  const height = parseFloat(document.getElementById('height').value);
-  const weight = parseFloat(document.getElementById('weight').value);
-  const shoulder = parseFloat(document.getElementById('shoulder').value);
-  const waist = parseFloat(document.getElementById('waist').value);
-  const sizeType = document.getElementById('sizeType').value;
+  const gender = document.getElementById('gender').value;
+  const h = +document.getElementById('height').value;
+  const s = +document.getElementById('shoulder').value;
+  const w = +document.getElementById('waist').value;
+  const hip = +document.getElementById('hip').value;
 
-  let size = '';
-  const bodyRatio = (height + weight + shoulder + waist) / 4;
-
-  if (sizeType === 'letter') {
-    if (bodyRatio < 90) size = 'S';
-    else if (bodyRatio < 100) size = 'M';
-    else if (bodyRatio < 110) size = 'L';
-    else if (bodyRatio < 120) size = 'XL';
-    else size = 'XXL';
-  } else {
-    if (bodyRatio < 90) size = '32';
-    else if (bodyRatio < 100) size = '34';
-    else if (bodyRatio < 110) size = '36';
-    else if (bodyRatio < 120) size = '38';
-    else size = '40';
+  if (!h || !s || !w || !hip) {
+    return showResult("Iltimos, barcha maydonlarni to‘ldiring.");
   }
 
-  const result = `Sizning o‘lchamingiz: ${size}`;
-  document.getElementById('result').innerText = result;
+  const size = (gender === 'men')
+    ? calcMen(h, s, w, hip)
+    : calcWomen(h, s, w, hip);
 
-  // PDF tugmasini ko‘rsatamiz
+  showResult(`Sizga mos kiyim o‘lchamingiz: ${size}`);
   document.getElementById('downloadPDF').style.display = 'block';
 });
 
-document.getElementById('downloadPDF').addEventListener('click', function () {
-  const element = document.getElementById('pdfArea');
-  html2pdf().from(element).save('kiyim-olchami.pdf');
+document.getElementById('downloadPDF').addEventListener('click', () => {
+  html2pdf().from(document.getElementById('pdfArea')).save('kiyim-olchami.pdf');
 });
+
+function showResult(text) {
+  document.getElementById('result').innerText = text;
+}
+
+// Erkaklar uchun
+function calcMen(h, s, w, hip) {
+  if (h >=185 || s>=106 || w>=91) return 'XL';
+  if (h>=180 || s>=101 || w>=86) return 'L';
+  if (h>=175 || s>=96  || w>=81) return 'M';
+  return 'S';
+}
+
+// Ayollar uchun (EU chart) :contentReference[oaicite:1]{index=1}
+function calcWomen(h, s, w, hip) {
+  if (h>=175 || hip>=114 || w>=86) return 'XL';
+  if (h>=174 || hip>=108 || w>=80) return 'L';
+  if (h>=172 || hip>=104 || w>=76) return 'M';
+  return 'S';
+}
