@@ -5,24 +5,19 @@ const pdfBtn = document.getElementById('downloadPDF');
 calcBtn.addEventListener('click', () => {
   const gender = document.getElementById('gender').value;
   const fmt = document.getElementById('format').value;
-  const chest = +document.getElementById('chest').value;
-  const waist = +document.getElementById('waist').value;
-  const hip = +document.getElementById('hip').value;
+  const h = +document.getElementById('height').value;
+  const w = +document.getElementById('weight').value;
+  const ch = +document.getElementById('chestHip').value;
 
-  if (!chest || !waist || !hip) {
+  if (!h || !w || !ch) {
     resDiv.innerText = "Iltimos, barcha maydonlarni to‘ldiring.";
     return;
   }
 
-  let size = gender === 'men'
-    ? calcMen(chest)
-    : calcWomen(chest);
+  const sizeLetter = (gender === 'men') ? menSize(h, w, ch) : womenSize(h, w, ch);
+  const output = (fmt === 'letter') ? sizeLetter : mapToNumeric(sizeLetter);
 
-  let out = fmt === 'letter'
-    ? size
-    : mapToNumber(size);
-
-  resDiv.innerText = `Sizga mos o‘lcham: ${out}`;
+  resDiv.innerText = `Sizga mos o‘lcham: ${output}`;
   pdfBtn.style.display = 'block';
 });
 
@@ -30,23 +25,21 @@ pdfBtn.addEventListener('click', () => {
   html2pdf().from(document.getElementById('pdfArea')).save('kiyim-olchami.pdf');
 });
 
-function calcMen(ch) {
-  if (ch >= 147) return '4XL';
-  if (ch >= 137) return '3XL';
-  if (ch >= 127) return '2XL';
-  if (ch >= 117) return 'XL';
-  return 'L';
+function menSize(h, w, ch) {
+  if (ch >= 119 || h > 185 || w > 90) return 'XL';
+  if (ch >= 107 || h > 180 || w > 80) return 'L';
+  if (ch >= 96 || h > 175 || w > 70) return 'M';
+  return 'S';
 }
 
-function calcWomen(bust) {
-  if (bust >= 143) return '4XL';
-  if (bust >= 131) return '3XL';
-  if (bust >= 119) return 'XXL';
-  if (bust >= 107) return 'XL';
-  return 'L';
+function womenSize(h, w, ch) {
+  if (ch >= 104 || h > 170 || w > 75) return 'L';
+  if (ch >= 90 || h > 165 || w > 60) return 'M';
+  return 'S';
 }
 
-function mapToNumber(size) {
-  const map = { L: 1, XL:2, XXL:3, '3XL':4, '4XL':5 };
+// Harfli razmerni raqamli EU formatga o‘giradi
+function mapToNumeric(size) {
+  const map = { S:'36', M:'38', L:'40', XL:'42' };
   return map[size] || size;
 }
