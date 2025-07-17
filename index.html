@@ -1,46 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kiyim o‘lchov hisoblagich</title>
+  <title>Kiyim O‘lchov Kalkulyatori</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container" id="pdfArea">
-    <h1>Bo'mpaloqlar Kiyim O‘lchov Hisoblagichi</h1>
+    <h1>Kiyim O‘lchov Kalkulyatori</h1>
     <form id="sizeForm">
+      <label for="gender">Jins:</label>
+      <select id="gender">
+        <option value="men">Erkak</option>
+        <option value="women">Ayol</option>
+      </select>
+
       <label for="height">Bo‘y (cm):</label>
       <input type="number" id="height" required />
-
-      <label for="weight">Vazn (kg):</label>
-      <input type="number" id="weight" required />
 
       <label for="shoulder">Yelka kengligi (cm):</label>
       <input type="number" id="shoulder" required />
 
-      <label for="waist">Bel aylanasi (cm):</label>
+      <label for="waist">Bel (cm):</label>
       <input type="number" id="waist" required />
 
-      <label for="sizeType">O‘lcham turi:</label>
-      <select id="sizeType">
-        <option value="letter">S/M/L</option>
-        <option value="number">32/34/36</option>
-      </select>
+      <label for="hip">Son (cm):</label>
+      <input type="number" id="hip" required />
 
       <button type="submit">Hisoblash</button>
     </form>
 
     <div id="result"></div>
-
-    <button id="downloadPDF" style="display: none; margin-top: 15px;">📄 PDF yuklab olish</button>
-
-    <div class="footer-note">😊 Mijozga hurmat bilan – doimo xizmatdamiz! Hohlasez dieta menu beramiz></div>
+    <button id="downloadPDF" style="display:none;">📄 PDF yuklab olish</button>
+    <div class="footer-note">😊 Mijozga hurmat bilan – sizning qulayligingiz 🥰</div>
   </div>
-
-  <!-- PDF kutubxonasi -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
   <script src="script.js"></script>
 </body>
 </html>
