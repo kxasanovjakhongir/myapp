@@ -2,39 +2,42 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bo'mpaloqlar Kiyim O‘lchov Oshxonasi</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Bo'mpaloqlar o‘lchov Oshxonasi</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <div class="container" id="pdfArea">
-    <h1>Bo'mpaloqlar Kiyim O‘lchov Oshxonasi</h1>
-    <form id="sizeForm">
-      <label for="gender">Jins:</label>
+    <h1>Bo'mpaloqlar o‘lchov Oshxonasi</h1>
+
+    <div class="row">
+      <label>Format:</label>
+      <select id="format">
+        <option value="letter">Harfli (L, XL...)</option>
+        <option value="number">Raqamli (1=L, 2=XL...)</option>
+      </select>
+
+      <label>Jins:</label>
       <select id="gender">
         <option value="men">Erkak</option>
         <option value="women">Ayol</option>
       </select>
+    </div>
 
-      <label for="height">Bo‘y (cm):</label>
-      <input type="number" id="height" required />
+    <label>Ko‘krak (chest/bust), sm:</label>
+    <input type="number" id="chest" required/>
+    <label>Bel, sm:</label>
+    <input type="number" id="waist" required/>
+    <label>Son (hip), sm:</label>
+    <input type="number" id="hip" required/>
 
-      <label for="shoulder">Yelka kengligi (cm):</label>
-      <input type="number" id="shoulder" required />
-
-      <label for="waist">Bel (cm):</label>
-      <input type="number" id="waist" required />
-
-      <label for="hip">Son (cm):</label>
-      <input type="number" id="hip" required />
-
-      <button type="submit">Hisoblash</button>
-    </form>
+    <button id="calc">Hisoblash</button>
 
     <div id="result"></div>
     <button id="downloadPDF" style="display:none;">📄 PDF yuklab olish</button>
-    <div class="footer-note">😊 Mijozga hurmat bilan – sizning qulayligingiz 🥰  Hohlasangiz bizda dieta menu bor</div>
+    <div class="footer-note">😊 Mijozga hurmat bilan!</div>
   </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
