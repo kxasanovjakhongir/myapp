@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kiyim o‘lchov hisoblagich</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container" id="pdfArea">
+    <h1>Kiyim O‘lchov Hisoblagich</h1>
+    <form id="sizeForm">
+      <label for="height">Bo‘y (cm):</label>
+      <input type="number" id="height" required />
+
+      <label for="weight">Vazn (kg):</label>
+      <input type="number" id="weight" required />
+
+      <label for="shoulder">Yelka kengligi (cm):</label>
+      <input type="number" id="shoulder" required />
+
+      <label for="waist">Bel aylanasi (cm):</label>
+      <input type="number" id="waist" required />
+
+      <label for="sizeType">O‘lcham turi:</label>
+      <select id="sizeType">
+        <option value="letter">S/M/L</option>
+        <option value="number">32/34/36</option>
+      </select>
+
+      <button type="submit">Hisoblash</button>
+    </form>
+
+    <div id="result"></div>
+
+    <button id="downloadPDF" style="display: none; margin-top: 15px;">📄 PDF yuklab olish</button>
+
+    <div class="footer-note">😊 Mijozga hurmat bilan – doimo xizmatdamiz!</div>
+  </div>
+
+  <!-- PDF kutubxonasi -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <script src="script.js"></script>
+</body>
+</html>
