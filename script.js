@@ -1,38 +1,45 @@
-// script.js
-const btn = document.getElementById('calc'),
-      res = document.getElementById('result'),
-      pdfBtn = document.getElementById('downloadPDF');
+const calcBtn = document.getElementById('calc');
+const resDiv = document.getElementById('result');
+const pdfBtn = document.getElementById('downloadPDF');
 
-btn.onclick = () => {
-  const g=document.getElementById('gender').value,
-        f=document.getElementById('format').value,
-        h=+height.value, w=+weight.value, ch=+chestHip.value,
-        waist=+waist.value, sh=+shoulder.value;
-  if(!h||!w||!ch||!waist||!sh){res.innerText="To‘ldiring!";return;}
+calcBtn.addEventListener('click', () => {
+  const gender = document.getElementById('gender').value;
+  const fmt = document.getElementById('format').value;
+  const h = +document.getElementById('height').value;
+  const w = +document.getElementById('weight').value;
+  const ch = +document.getElementById('chestHip').value;
 
-  const sizeL = (g==='men')? menSize(h,w,ch,waist,sh) : womenSize(h,w,ch,waist,sh);
-  const output = f==='letter'? sizeL : mapToNumeric(sizeL);
-  res.innerText = `Mos o‘lchamingiz: ${output}`;
-  pdfBtn.style.display='block';
-};
+  if (!h || !w || !ch) {
+    resDiv.innerText = "Iltimos, barcha maydonlarni to‘ldiring.";
+    return;
+  }
 
-pdfBtn.onclick = () => html2pdf().from(pdfArea).save('kiyim.pdf');
+  const sizeLetter = (gender === 'men') ? menSize(h, w, ch) : womenSize(h, w, ch);
+  const output = (fmt === 'letter') ? sizeLetter : mapToNumeric(sizeLetter);
 
-function menSize(h,w,ch,wa,sh){
-  if(ch>=119||wa>=107||sh>=45.5||h>185||w>95) return 'XL';
-  if(ch>=110||wa>=102||sh>=44.5||h>180||w>85)   return 'L';
-  if(ch>=97||wa>=97||sh>=42||h>175||w>75)        return 'M';
+  resDiv.innerText = `Sizga mos o‘lcham: ${output}`;
+  pdfBtn.style.display = 'block';
+});
+
+pdfBtn.addEventListener('click', () => {
+  html2pdf().from(document.getElementById('pdfArea')).save('kiyim-olchami.pdf');
+});
+
+function menSize(h, w, ch) {
+  if (ch >= 119 || h > 185 || w > 90) return 'XL';
+  if (ch >= 107 || h > 180 || w > 80) return 'L';
+  if (ch >= 96 || h > 175 || w > 70) return 'M';
   return 'S';
 }
 
-function womenSize(h,w,ch,wa,sh){
-  if(ch>=101||wa>=84||sh>=40||h>170||w>75) return 'XL';
-  if(ch>=96||wa>=79||sh>=38||h>165||w>65)  return 'L';
-  if(ch>=91||wa>=74||sh>=37||h>160||w>55)  return 'M';
+function womenSize(h, w, ch) {
+  if (ch >= 104 || h > 170 || w > 75) return 'L';
+  if (ch >= 90 || h > 165 || w > 60) return 'M';
   return 'S';
 }
 
-function mapToNumeric(s){
-  const m={S:'32',M:'36',L:'38',XL:'40'};
-  return m[s]||s;
+// Harfli razmerni raqamli EU formatga o‘giradi
+function mapToNumeric(size) {
+  const map = { S:'36', M:'38', L:'40', XL:'42' };
+  return map[size] || size;
 }
