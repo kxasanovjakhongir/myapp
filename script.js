@@ -4,17 +4,25 @@ const btn = document.getElementById('calc'),
       pdfBtn = document.getElementById('downloadPDF');
 
 btn.onclick = () => {
-  const g=document.getElementById('gender').value,
-        f=document.getElementById('format').value,
-        h=+height.value, w=+weight.value, ch=+chestHip.value,
-        waist=+waist.value, sh=+shoulder.value;
-  if(!h||!w||!ch||!waist||!sh){res.innerText="To‘ldiring!";return;}
+  const g = document.getElementById('gender').value;
+  const f = document.getElementById('format').value;
+  const h = +document.getElementById('height').value;
+  const w = +document.getElementById('weight').value;
+  const ch = +document.getElementById('chestHip').value;
+  const waist = +document.getElementById('waist').value;
+  const sh = +document.getElementById('shoulder').value;
 
-  const sizeL = (g==='men')? menSize(h,w,ch,waist,sh) : womenSize(h,w,ch,waist,sh);
-  const output = f==='letter'? sizeL : mapToNumeric(sizeL);
+  if (!h || !w || !ch || !waist || !sh) {
+    res.innerText = "To‘ldiring!";
+    return;
+  }
+
+  const sizeL = (g === 'men') ? menSize(h, w, ch, waist, sh) : womenSize(h, w, ch, waist, sh);
+  const output = f === 'letter' ? sizeL : mapToNumeric(sizeL);
   res.innerText = `Mos o‘lchamingiz: ${output}`;
-  pdfBtn.style.display='block';
+  pdfBtn.style.display = 'block';
 };
+
 
 pdfBtn.onclick = () => html2pdf().from(pdfArea).save('kiyim.pdf');
 
